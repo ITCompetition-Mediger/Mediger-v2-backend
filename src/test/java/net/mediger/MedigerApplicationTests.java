@@ -1,0 +1,13 @@
+package net.mediger;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class MedigerApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
+
+}
