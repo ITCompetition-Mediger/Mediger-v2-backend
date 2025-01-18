@@ -1,6 +1,7 @@
 package net.mediger.api.member.domain;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -8,7 +9,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,43 +47,13 @@ public class Member extends BaseTimeEntity {
     private Gender gender;
 
     @Column
-    private int age;
+    private Integer age;
 
-    @Column(name = "health_concerns")
-    private String healthConcerns;
+    @Embedded
+    private HealthInfo healthInfo;
 
-    @Column(name = "health_focus")
-    private String healthFocus;
-
-    @Column(name = "health_chronic_disease")
-    private String healthChronicDisease;
-
-    @Column(name = "health_interested_disease")
-    private String healthInterestedDisease;
-
-    @Column(name = "business_name")
-    private String businessName;
-
-    @Column(name = "registration_number")
-    private String registrationNumber;
-
-    @Column(name = "business_address")
-    private String businessAddress;
-
-    @Column(name = "owner_name")
-    private String ownerName;
-
-    @Column(name = "opening_date")
-    private LocalDate openingDate;
-
-    @Column(name = "ecommerce_registration_number")
-    private String ecommerceRegistrationNumber;
-
-    @Column(name = "settlement_account")
-    private String settlementAccount;
-
-    @Column(name = "documents")
-    private String documents;
+    @Embedded
+    private Business business;
 
     @Builder(access = AccessLevel.PRIVATE)
     private Member(String account, String password, String name, String email, String phone, Role role) {
@@ -118,40 +88,27 @@ public class Member extends BaseTimeEntity {
                 .build();
     }
 
-    public void updateDetails(Gender gender, int age, String healthConcerns, String healthFocus, String healthChronicDisease,
-                              String healthInterestedDisease) {
+    public void updateDetails(Gender gender, int age, HealthInfo healthInfo) {
         authorizedMember(role);
         this.gender = gender;
         this.age = age;
-        this.healthConcerns = healthConcerns;
-        this.healthFocus = healthFocus;
-        this.healthChronicDisease = healthChronicDisease;
-        this.healthInterestedDisease = healthInterestedDisease;
+        this.healthInfo = healthInfo;
     }
 
-    public void updateBusinessDetails(String businessName, String registrationNumber, String businessAddress,
-                                      String ownerName, LocalDate openingDate, String ecommerceRegistrationNumber,
-                                      String settlementAccount, String documents) {
+    public void updateBusinessDetails(Business business) {
         authorizedBusiness(role);
-        this.businessName = businessName;
-        this.registrationNumber = registrationNumber;
-        this.businessAddress = businessAddress;
-        this.ownerName = ownerName;
-        this.openingDate = openingDate;
-        this.ecommerceRegistrationNumber = ecommerceRegistrationNumber;
-        this.settlementAccount = settlementAccount;
-        this.documents = documents;
+        this.business = business;
     }
 
     public void authorizedMember(Role role) {
-        if (!role.equals(Role.MEMBER)) {
-            throw new IllegalArgumentException("잘못된 권한입니다.");
+        if (role != Role.MEMBER) {
+            throw new IllegalArgumentException("멤버 회원만 접근 가능합니다.");
         }
     }
 
     public void authorizedBusiness(Role role) {
-        if (!role.equals(Role.BUSINESS)) {
-            throw new IllegalArgumentException("잘못된 권한입니다.");
+        if (role != Role.BUSINESS) {
+            throw new IllegalArgumentException("사업자 회원만 접근 가능합니다.");
         }
     }
 }
