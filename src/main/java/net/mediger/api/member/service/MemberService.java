@@ -6,6 +6,7 @@ import net.mediger.api.member.api.dto.RequestBusinessDetails;
 import net.mediger.api.member.api.dto.RequestJoin;
 import net.mediger.api.member.api.dto.RequestMemberDetails;
 import net.mediger.api.member.domain.Business;
+import net.mediger.api.member.domain.Gender;
 import net.mediger.api.member.domain.HealthInfo;
 import net.mediger.api.member.domain.Member;
 import net.mediger.api.member.repository.MemberRepository;
@@ -62,7 +63,7 @@ public class MemberService {
         HealthInfo healthInfo = getHealthInfo(requestDetails);
 
         member.updateDetails(
-                requestDetails.gender(),
+                Gender.findGender(requestDetails.gender()),
                 requestDetails.age(),
                 healthInfo
         );
