@@ -4,6 +4,7 @@ public record RequestJoin(
         String account,
         String password,
         String name,
-        int age
+        String email,
+        String phone
 ) {
 }
