@@ -5,7 +5,6 @@ import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Embeddable
@@ -15,7 +14,6 @@ import lombok.NoArgsConstructor;
         @AttributeOverride(name = "chronicDisease", column = @Column(name = "health_chronic_disease")),
         @AttributeOverride(name = "interestedDisease", column = @Column(name = "health_interested_disease"))
 })
-@Getter
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class HealthInfo {
@@ -27,6 +25,4 @@ public class HealthInfo {
     private String chronicDisease;
 
     private String interestedDisease;
-
-
 }
