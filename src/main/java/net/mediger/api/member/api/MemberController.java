@@ -1,5 +1,6 @@
 package net.mediger.api.member.api;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import net.mediger.api.member.api.dto.RequestBusinessDetails;
 import net.mediger.api.member.api.dto.RequestJoin;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Member", description = "멤버 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/members")
