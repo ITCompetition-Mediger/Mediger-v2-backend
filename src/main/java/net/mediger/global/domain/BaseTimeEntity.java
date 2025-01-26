@@ -1,4 +1,4 @@
-package net.mediger.api.member.domain;
+package net.mediger.global.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

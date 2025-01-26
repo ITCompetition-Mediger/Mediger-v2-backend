@@ -21,3 +21,8 @@ logging:
       hibernate:
         SQL: debug
         orm.jdbc.bind: trace
+
+server:
+  url:
+    local: ${LOCAL_URL}
+    prod: ${PROD_URL}
