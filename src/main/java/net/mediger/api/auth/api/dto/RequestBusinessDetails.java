@@ -1,13 +1,10 @@
-package net.mediger.api.member.api.dto;
+package net.mediger.api.auth.api.dto;
 
 import java.time.LocalDate;
 import net.mediger.api.member.domain.Business;
 
 public record RequestBusinessDetails(
-        String name,
-        String registrationNumber,
         String address,
-        String ownerName,
         LocalDate openingDate,
         String ecommerceRegistrationNumber,
         String settlementAccount,
@@ -15,7 +12,6 @@ public record RequestBusinessDetails(
 ) {
 
     public Business toDetails() {
-        return new Business(name, registrationNumber, address, ownerName, openingDate, ecommerceRegistrationNumber,
-                settlementAccount, documents);
+        return new Business(address, openingDate, ecommerceRegistrationNumber, settlementAccount, documents);
     }
 }

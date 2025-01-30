@@ -96,27 +96,14 @@ public class Member extends BaseTimeEntity {
     }
 
     public void updateDetails(Gender gender, int age, HealthInfo healthInfo) {
-        authorizedMember(role);
+        validateAge(age);
         this.gender = gender;
         this.age = age;
         this.healthInfo = healthInfo;
     }
 
     public void updateBusinessDetails(Business business) {
-        authorizedBusiness(role);
         this.business = business;
-    }
-
-    public void authorizedMember(Role role) {
-        if (role != Role.MEMBER) {
-            throw new IllegalArgumentException("멤버 회원만 접근 가능합니다.");
-        }
-    }
-
-    public void authorizedBusiness(Role role) {
-        if (role != Role.BUSINESS) {
-            throw new IllegalArgumentException("사업자 회원만 접근 가능합니다.");
-        }
     }
 
     public void validate(String account, String password, String name, String email, String phone) {
@@ -166,6 +153,12 @@ public class Member extends BaseTimeEntity {
         }
         if (!PHONE_REGEX.matcher(phone).matches()) {
             throw new IllegalArgumentException("휴대폰 형식이 올바르지 않습니다. (하이픈 없이)");
+        }
+    }
+
+    private void validateAge(int age) {
+        if (age < 10) {
+            throw new IllegalArgumentException("나이는 10세 이상이어야 합니다.");
         }
     }
 }

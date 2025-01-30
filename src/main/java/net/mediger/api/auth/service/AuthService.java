@@ -1,9 +1,10 @@
-package net.mediger.api.member.service;
+package net.mediger.api.auth.service;
 
 import lombok.RequiredArgsConstructor;
-import net.mediger.api.member.api.dto.RequestBusinessDetails;
-import net.mediger.api.member.api.dto.RequestJoin;
-import net.mediger.api.member.api.dto.RequestMemberDetails;
+import net.mediger.api.auth.api.dto.RequestBusinessDetails;
+import net.mediger.api.auth.api.dto.RequestBusinessJoin;
+import net.mediger.api.auth.api.dto.RequestDetails;
+import net.mediger.api.auth.api.dto.RequestJoin;
 import net.mediger.api.member.domain.Gender;
 import net.mediger.api.member.domain.Member;
 import net.mediger.api.member.repository.MemberRepository;
@@ -13,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class MemberService {
+public class AuthService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
@@ -27,31 +28,32 @@ public class MemberService {
     }
 
     @Transactional
-    public void join(RequestJoin joinMember) {
-        String encodedPassword = passwordEncoder.encode(joinMember.password());
+    public void join(RequestJoin requestJoin) {
+        String encodedPassword = passwordEncoder.encode(requestJoin.password());
 
-        Member newMember = Member.createMember(joinMember.account(), encodedPassword, joinMember.name(),
-                joinMember.email(), joinMember.phone());
-
-        memberRepository.save(newMember);
-    }
-
-    @Transactional
-    public void joinBusiness(RequestJoin joinMember) {
-        String encodedPassword = passwordEncoder.encode(joinMember.password());
-        Member newMember = Member.createBusinessMember(joinMember.account(), encodedPassword, joinMember.name(),
-                joinMember.email(), joinMember.phone());
+        Member newMember = Member.createMember(requestJoin.account(), encodedPassword, requestJoin.name(),
+                requestJoin.email(), requestJoin.phone());
 
         memberRepository.save(newMember);
     }
 
     @Transactional
-    public void updateDetails(Long id, RequestMemberDetails requestDetails) {
+    public void joinBusiness(RequestBusinessJoin requestBusinessJoin) {
+        String encodedPassword = passwordEncoder.encode(requestBusinessJoin.password());
+
+        Member newMember = Member.createBusinessMember(requestBusinessJoin.account(), encodedPassword,
+                requestBusinessJoin.name(),
+                requestBusinessJoin.email(), requestBusinessJoin.phone());
+
+        memberRepository.save(newMember);
+    }
+
+    @Transactional
+    public void updateDetails(Long id, RequestDetails requestDetails) {
         Member member = findMember(id);
 
         member.updateDetails(Gender.findGender(requestDetails.gender()), requestDetails.age(),
-                requestDetails.toHealthDetails()
-        );
+                requestDetails.toHealthDetails());
     }
 
     @Transactional

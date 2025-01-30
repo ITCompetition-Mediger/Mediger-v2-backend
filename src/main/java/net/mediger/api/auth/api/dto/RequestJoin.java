@@ -1,4 +1,4 @@
-package net.mediger.api.member.api.dto;
+package net.mediger.api.auth.api.dto;
 
 public record RequestJoin(
         String account,

@@ -24,5 +24,4 @@ logging:
 
 server:
   url:
-    local: ${LOCAL_URL}
     prod: ${PROD_URL}

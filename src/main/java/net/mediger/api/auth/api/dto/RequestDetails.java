@@ -1,8 +1,8 @@
-package net.mediger.api.member.api.dto;
+package net.mediger.api.auth.api.dto;
 
 import net.mediger.api.member.domain.HealthInfo;
 
-public record RequestMemberDetails(
+public record RequestDetails(
         String gender,
         int age,
         String healthConcerns,

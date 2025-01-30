@@ -11,16 +11,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SwaggerConfig {
 
-    @Value("${server.url.local}")
-    private String localServerUrl;
-
     @Value("${server.url.prod}")
     private String prodServerUrl;
 
     @Bean
     public OpenAPI openAPI() {
         Server server = new Server();
-        server.setUrl(localServerUrl);
+        server.setUrl("/");
         server.description("Local Server");
 
         Server prodServer = new Server();
