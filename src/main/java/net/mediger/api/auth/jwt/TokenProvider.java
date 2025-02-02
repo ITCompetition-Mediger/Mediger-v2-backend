@@ -9,7 +9,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.mediger.global.properties.JwtProperties;
-import net.mediger.global.redis.RedisService;
+import net.mediger.api.auth.jwt.redis.RedisService;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 
