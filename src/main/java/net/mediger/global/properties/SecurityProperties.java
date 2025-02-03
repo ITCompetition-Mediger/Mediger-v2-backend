@@ -18,4 +18,3 @@ public record SecurityProperties(List<String> whiteList) {
                 .toArray(AntPathRequestMatcher[]::new);
     }
 }
-
