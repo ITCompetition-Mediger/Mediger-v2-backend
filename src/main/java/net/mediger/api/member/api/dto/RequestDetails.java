@@ -1,4 +1,4 @@
-package net.mediger.api.auth.api.dto;
+package net.mediger.api.member.api.dto;
 
 import java.util.List;
 

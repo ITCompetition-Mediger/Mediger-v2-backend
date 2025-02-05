@@ -1,7 +1,6 @@
 package net.mediger.api.member.domain;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -47,14 +46,11 @@ public class Member extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column
-    private Integer age;
+    @Enumerated(EnumType.STRING)
+    private AgeRange age;
 
-    @Embedded
-    private HealthInfo healthInfo;
-
-    @Embedded
-    private Business business;
+    @Enumerated(EnumType.STRING)
+    private HealthConditions healthConditions;
 
     @Builder(access = AccessLevel.PRIVATE)
     private Member(String account, String password, String name, String email, String phone, Role role) {
@@ -77,25 +73,9 @@ public class Member extends BaseTimeEntity {
                 .build();
     }
 
-    public static Member createBusinessMember(String account, String password, String name, String email,
-                                              String phone) {
-        return Member.builder()
-                .account(account)
-                .password(password)
-                .name(name)
-                .email(email)
-                .phone(phone)
-                .role(Role.BUSINESS)
-                .build();
-    }
-
-    public void updateDetails(Gender gender, int age, HealthInfo healthInfo) {
+    public void updateDetails(Gender gender, AgeRange age, HealthConditions healthConditions) {
         this.gender = gender;
         this.age = age;
-        this.healthInfo = healthInfo;
-    }
-
-    public void updateBusinessDetails(Business business) {
-        this.business = business;
+        this.healthConditions = healthConditions;
     }
 }
