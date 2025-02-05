@@ -3,7 +3,7 @@ package net.mediger.global.config;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 import lombok.RequiredArgsConstructor;
-import net.mediger.api.auth.jwt.JwtFilter;
+import net.mediger.auth.jwt.JwtFilter;
 import net.mediger.global.properties.SecurityProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
