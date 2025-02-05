@@ -1,4 +1,4 @@
-package net.mediger.api.member.domain;
+package net.mediger.member.domain;
 
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
