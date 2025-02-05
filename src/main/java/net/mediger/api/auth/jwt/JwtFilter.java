@@ -52,9 +52,9 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     private void setAuthentication(String token) {
-        String account = tokenProvider.getAccountFromToken(token);
+        String id = tokenProvider.getIdFromToken(token);
         String role = tokenProvider.getRoleFromToken(token);
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(account, null,
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(id, null,
                 getAuthority(role));
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }

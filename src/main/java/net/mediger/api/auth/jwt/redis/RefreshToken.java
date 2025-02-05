@@ -13,10 +13,10 @@ public class RefreshToken implements Serializable {
 
     @Id
     private String refreshToken;
-    private String account;
+    private Long memberId;
 
-    public RefreshToken(String refreshToken, String account) {
+    public RefreshToken(String refreshToken, Long memberId) {
         this.refreshToken = refreshToken;
-        this.account = account;
+        this.memberId = memberId;
     }
 }

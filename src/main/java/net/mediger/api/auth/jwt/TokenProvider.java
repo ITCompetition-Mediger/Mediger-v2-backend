@@ -19,28 +19,28 @@ import org.springframework.stereotype.Component;
 @EnableConfigurationProperties(JwtProperties.class)
 public class TokenProvider {
 
-    private static final String ACCOUNT_KEY = "account";
+    private static final String ID_KEY = "id";
     private static final String ROLE_KEY = "role";
 
     private final JwtProperties jwtProperties;
     private final RedisService redisService;
 
-    public ResponseToken generateToken(String account, String role) {
-        String accessToken = generateAccessToken(account, role);
+    public ResponseToken generateToken(Long id, String role) {
+        String accessToken = generateAccessToken(id, role);
         String refreshToken = UUID.randomUUID().toString();
 
-        redisService.saveRefreshToken(refreshToken, account);
+        redisService.saveRefreshToken(refreshToken, id);
 
         return ResponseToken.builder()
                 .accessToken(accessToken)
                 .build();
     }
 
-    public String generateAccessToken(String account, String role) {
+    public String generateAccessToken(Long id, String role) {
         Date now = new Date();
 
         return Jwts.builder()
-                .claim(ACCOUNT_KEY, account)
+                .claim(ID_KEY, id)
                 .claim(ROLE_KEY, role)
                 .issuedAt(now)
                 .expiration(new Date(now.getTime() + jwtProperties.accessTokenExpiration()))
@@ -48,8 +48,8 @@ public class TokenProvider {
                 .compact();
     }
 
-    public String getAccountFromToken(String token) {
-        return getClaimFromToken(token, ACCOUNT_KEY);
+    public String getIdFromToken(String token) {
+        return getClaimFromToken(token, ID_KEY);
     }
 
     public String getRoleFromToken(String token) {

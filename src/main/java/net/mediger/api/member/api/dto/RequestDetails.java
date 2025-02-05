@@ -1,22 +1,15 @@
 package net.mediger.api.auth.api.dto;
 
-import net.mediger.api.member.domain.HealthInfo;
+import java.util.List;
 
 public record RequestDetails(
         String gender,
         int age,
-        String healthConcerns,
-        String healthFocus,
-        String healthChronicDisease,
-        String healthInterestedDisease
+        List<String> healthCondition
 ) {
 
     public RequestDetails {
         validateAge(age);
-    }
-
-    public HealthInfo toHealthDetails() {
-        return new HealthInfo(healthConcerns, healthFocus, healthChronicDisease, healthInterestedDisease);
     }
 
     private void validateAge(int age) {

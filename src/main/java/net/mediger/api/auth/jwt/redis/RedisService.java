@@ -11,9 +11,9 @@ public class RedisService {
 
     private final RedisRepository redisRepository;
 
-    public void saveRefreshToken(String tokenId, String account) {
+    public void saveRefreshToken(String tokenId, Long memberId) {
         try {
-            RefreshToken refreshToken = new RefreshToken(tokenId, account);
+            RefreshToken refreshToken = new RefreshToken(tokenId, memberId);
             deleteRefreshToken(tokenId);
             redisRepository.save(refreshToken);
             log.info("\uD83D\uDD34 RefreshToken 저장 완료: {}", refreshToken);
