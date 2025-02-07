@@ -4,6 +4,8 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 
 import lombok.RequiredArgsConstructor;
 import net.mediger.auth.jwt.JwtFilter;
+import net.mediger.global.exception.handler.GlobalAccessDeniedHandler;
+import net.mediger.global.exception.handler.GlobalAuthenticationEntryPoint;
 import net.mediger.global.properties.SecurityProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +26,8 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
     private final SecurityProperties securityProperties;
+    private final GlobalAuthenticationEntryPoint globalAuthenticationEntryPoint;
+    private final GlobalAccessDeniedHandler globalAccessDeniedHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -42,6 +46,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         auth -> auth.requestMatchers(securityProperties.getWhiteListMatchers()).permitAll()
                                 .anyRequest().authenticated())
+                .exceptionHandling(
+                        exception -> exception.authenticationEntryPoint(globalAuthenticationEntryPoint)
+                                .accessDeniedHandler(globalAccessDeniedHandler))
+
                 .build();
     }
 }
