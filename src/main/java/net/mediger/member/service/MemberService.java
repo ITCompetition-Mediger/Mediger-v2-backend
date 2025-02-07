@@ -1,6 +1,8 @@
 package net.mediger.member.service;
 
 import lombok.RequiredArgsConstructor;
+import net.mediger.global.exception.CustomException;
+import net.mediger.global.exception.ErrorCode;
 import net.mediger.member.api.dto.RequestBusinessDetails;
 import net.mediger.member.api.dto.RequestDetails;
 import net.mediger.member.domain.AgeRange;
@@ -39,11 +41,11 @@ public class MemberService {
 
     private Member findAccount(Long id) {
         return memberRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디입니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ACCOUNT));
     }
 
     private Business findBusinessAccount(Long id) {
         return businessRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 기업 아이디입니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ACCOUNT));
     }
 }

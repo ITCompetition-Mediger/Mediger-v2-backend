@@ -6,6 +6,8 @@ import net.mediger.auth.api.dto.RequestJoin;
 import net.mediger.auth.api.dto.RequestLogin;
 import net.mediger.auth.jwt.ResponseToken;
 import net.mediger.auth.jwt.TokenProvider;
+import net.mediger.global.exception.CustomException;
+import net.mediger.global.exception.ErrorCode;
 import net.mediger.member.domain.Business;
 import net.mediger.member.domain.Member;
 import net.mediger.member.repository.BusinessRepository;
@@ -26,13 +28,19 @@ public class AuthService {
     @Transactional
     public boolean isCheckedAccount(String account) {
         if (memberRepository.existsByAccount(account)) {
-            throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
+            throw new CustomException(ErrorCode.EXIST_ACCOUNT);
         }
+
+        if (businessRepository.existsByAccount(account)) {
+            throw new CustomException(ErrorCode.EXIST_ACCOUNT);
+        }
+
         return true;
     }
 
     @Transactional
     public void join(RequestJoin requestJoin) {
+        isCheckedAccount(requestJoin.account());
         String encodedPassword = passwordEncoder.encode(requestJoin.password());
 
         Member newMember = Member.createMember(requestJoin.account(), encodedPassword, requestJoin.name(),
@@ -43,6 +51,7 @@ public class AuthService {
 
     @Transactional
     public void joinBusiness(RequestBusinessJoin requestBusinessJoin) {
+        isCheckedAccount(requestBusinessJoin.account());
         String encodedPassword = passwordEncoder.encode(requestBusinessJoin.password());
 
         Business business = Business.createBusiness(requestBusinessJoin.account(), encodedPassword,
@@ -70,23 +79,23 @@ public class AuthService {
 
     private Member findAccount(String account) {
         return memberRepository.findMemberByAccount(account)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디입니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ACCOUNT));
     }
 
     private Business findBusinessAccount(String account) {
         return businessRepository.findBusinessByAccount(account)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 기업 아이디입니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ACCOUNT));
     }
 
     private void isMatchedPassword(String password, Member member) {
         if (!passwordEncoder.matches(password, member.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new CustomException(ErrorCode.MISMATCH_PASSWORD);
         }
     }
 
     private void isMatchedPasswordByBusiness(String password, Business business) {
         if (!passwordEncoder.matches(password, business.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new CustomException(ErrorCode.MISMATCH_PASSWORD);
         }
     }
 }
