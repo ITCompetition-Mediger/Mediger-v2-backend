@@ -1,6 +1,8 @@
 package net.mediger.member.domain;
 
 import java.util.Arrays;
+import net.mediger.global.exception.CustomException;
+import net.mediger.global.exception.ErrorCode;
 
 public enum Gender {
 
@@ -10,6 +12,6 @@ public enum Gender {
         return Arrays.stream(Gender.values())
                 .filter(gen -> gen.toString().equals(gender.toUpperCase()))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 성별입니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_GENDER));
     }
 }

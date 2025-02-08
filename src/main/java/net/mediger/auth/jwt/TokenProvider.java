@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.mediger.global.exception.CustomException;
+import net.mediger.global.exception.ErrorCode;
 import net.mediger.global.properties.JwtProperties;
 import net.mediger.auth.jwt.redis.RedisService;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -62,9 +64,9 @@ public class TokenProvider {
                     .get(key)
                     .toString();
         } catch (ExpiredJwtException e) {
-            throw new IllegalArgumentException("만료된 토큰입니다.", e.getCause());
+            throw new CustomException(ErrorCode.EXPIRED_TOKEN);
         } catch (Exception e) {
-            throw new IllegalArgumentException("유효하지 않은 토큰입니다.", e.getCause());
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
         }
     }
 

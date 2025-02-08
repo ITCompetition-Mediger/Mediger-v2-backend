@@ -4,6 +4,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
+import net.mediger.global.exception.CustomException;
 import net.mediger.member.domain.Gender;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -35,6 +36,6 @@ class GenderTest {
     @ValueSource(strings = {"남성", "여성", "기타"})
     void shouldThrowException_WhenInvalidGender(String invalidGender) {
         assertThatThrownBy(() -> Gender.findGender(invalidGender))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(CustomException.class);
     }
 }

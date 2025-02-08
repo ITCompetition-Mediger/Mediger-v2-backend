@@ -1,5 +1,10 @@
 package net.mediger.member.domain;
 
+import lombok.Getter;
+import net.mediger.global.exception.CustomException;
+import net.mediger.global.exception.ErrorCode;
+
+@Getter
 public enum AgeRange {
 
     TEENAGER(10),
@@ -31,7 +36,7 @@ public enum AgeRange {
             case 80 -> EIGHTIES;
             case 90 -> NINETIES;
             case 100 -> CENTENARIAN;
-            default -> throw new IllegalArgumentException("존재하지 않는 연령대입니다.");
+            default -> throw new CustomException(ErrorCode.NOT_FOUND_AGE_RANGE);
         };
     }
 }
