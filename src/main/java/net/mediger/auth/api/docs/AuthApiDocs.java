@@ -9,7 +9,7 @@ import net.mediger.auth.api.dto.RequestLogin;
 import net.mediger.auth.api.dto.RequestVerify;
 import net.mediger.auth.jwt.ResponseToken;
 import net.mediger.global.exception.response.ApiResponse;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -40,17 +40,17 @@ public interface AuthApiDocs {
 
     @Operation(summary = "일반 회원 가입")
     @ApiResponses(value = {
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "회원가입 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "회원가입 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "입력값 오류")
     })
-    ApiResponse<Void> join(RequestJoin requestJoin);
+    ResponseEntity<ApiResponse<Void>> join(RequestJoin requestJoin);
 
     @Operation(summary = "사업자 회원 가입")
     @ApiResponses(value = {
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "회원가입 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "회원가입 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "입력값 오류")
     })
-    ApiResponse<Void> joinBusiness(RequestBusinessJoin requestBusinessJoin);
+    ResponseEntity<ApiResponse<Void>> joinBusiness(RequestBusinessJoin requestBusinessJoin);
 
     @Operation(summary = "일반 회원 로그인")
     @ApiResponses(value = {
