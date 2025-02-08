@@ -26,6 +26,8 @@ public enum ErrorCode {
 
     NOT_MATCH_USER(HttpStatus.BAD_REQUEST, "본인의 정보만 수정할 수 있습니다."),
 
+    INVALID_CERTIFICATION_CODE(HttpStatus.BAD_REQUEST, "인증번호가 일치하지 않습니다."),
+
     NOT_FOUND_ACCOUNT(HttpStatus.NOT_FOUND, "존재하지 않는 아이디입니다."),
     NOT_FOUND_AGE_RANGE(HttpStatus.NOT_FOUND, "존재하지 않는 연령대 입니다."),
     NOT_FOUND_HEALTH_CONDITIONS(HttpStatus.NOT_FOUND, "존재하지 않는 건강 상태 입니다."),

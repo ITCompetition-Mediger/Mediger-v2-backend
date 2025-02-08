@@ -8,6 +8,7 @@ import net.mediger.auth.jwt.ResponseToken;
 import net.mediger.auth.jwt.TokenProvider;
 import net.mediger.global.exception.CustomException;
 import net.mediger.global.exception.ErrorCode;
+import net.mediger.global.message.SMSMessageSender;
 import net.mediger.member.domain.Business;
 import net.mediger.member.domain.Member;
 import net.mediger.member.repository.BusinessRepository;
@@ -15,6 +16,7 @@ import net.mediger.member.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +26,8 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
     private final BusinessRepository businessRepository;
+    private final CertificationCodeService certificationCodeService;
+    private final SMSMessageSender smsMessageSender;
 
     @Transactional
     public boolean isCheckedAccount(String account) {
@@ -35,6 +39,22 @@ public class AuthService {
             throw new CustomException(ErrorCode.EXIST_ACCOUNT);
         }
 
+        return true;
+    }
+
+    public void certification(String phone) {
+        String code = certificationCodeService.generateCertificationCode(phone);
+        smsMessageSender.send(phone, "Mediger 인증번호", code);
+    }
+
+    public boolean verify(String phone, String code) {
+        String savedCode = certificationCodeService.getCertificationCode(phone);
+
+        if (!ObjectUtils.nullSafeEquals(savedCode, code)) {
+            throw new CustomException(ErrorCode.INVALID_CERTIFICATION_CODE);
+        }
+
+        certificationCodeService.deleteCertificationCode(phone);
         return true;
     }
 

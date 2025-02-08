@@ -5,6 +5,7 @@ import net.mediger.auth.api.docs.AuthApiDocs;
 import net.mediger.auth.api.dto.RequestBusinessJoin;
 import net.mediger.auth.api.dto.RequestJoin;
 import net.mediger.auth.api.dto.RequestLogin;
+import net.mediger.auth.api.dto.RequestVerify;
 import net.mediger.auth.jwt.ResponseToken;
 import net.mediger.auth.service.AuthService;
 import net.mediger.global.exception.response.ApiResponse;
@@ -25,6 +26,20 @@ public class AuthController implements AuthApiDocs {
     @PostMapping("check")
     public ApiResponse<Boolean> checkAccount(@RequestParam String account) {
         return ApiResponse.success(authService.isCheckedAccount(account));
+    }
+
+    @Override
+    @PostMapping("certification")
+    public ApiResponse<Void> certification(@RequestParam String phone) {
+        authService.certification(phone);
+
+        return ApiResponse.successWithNoContent();
+    }
+
+    @Override
+    @PostMapping("verify")
+    public ApiResponse<Boolean> verify(@RequestBody RequestVerify requestVerify) {
+        return ApiResponse.success(authService.verify(requestVerify.phone(), requestVerify.code()));
     }
 
     @Override
