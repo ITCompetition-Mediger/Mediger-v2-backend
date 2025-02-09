@@ -10,8 +10,6 @@ import net.mediger.auth.api.dto.RequestVerify;
 import net.mediger.auth.jwt.ResponseToken;
 import net.mediger.global.exception.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Tag(name = "Auth Controller", description = "회원가입/로그인 API")
 public interface AuthApiDocs {
@@ -23,20 +21,26 @@ public interface AuthApiDocs {
     )
     ApiResponse<Boolean> checkAccount(String account);
 
-
     @Operation(summary = "휴대폰 인증")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "인증번호 전송 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "인증번호 전송 실패")}
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "인증번호 전송 실패")}
     )
-    ApiResponse<Void> certification(@RequestParam String phone);
+    ApiResponse<Void> certification(String phone);
 
-    @Operation(summary = "휴대폰 인증 확인")
+    @Operation(summary = "이메일 인증")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "인증번호 전송 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "인증번호 전송 실패")}
+    )
+    ApiResponse<Void> certificationBusiness(String email);
+
+    @Operation(summary = "휴대폰 / 이메일 인증 확인")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "인증 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "인증 실패")}
     )
-    ApiResponse<Boolean> verify(@RequestBody RequestVerify requestVerify);
+    ApiResponse<Boolean> verify(RequestVerify requestVerify);
 
     @Operation(summary = "일반 회원 가입")
     @ApiResponses(value = {

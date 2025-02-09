@@ -21,6 +21,18 @@ spring:
       port: ${REDIS_PORT}
       password: ${REDIS_PASSWORD}
 
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 security:
   whiteList: ${WHITE_LIST}
 

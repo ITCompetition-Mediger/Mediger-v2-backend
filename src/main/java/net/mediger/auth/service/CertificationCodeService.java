@@ -11,18 +11,18 @@ public class CertificationCodeService {
 
     private final RedisService redisService;
 
-    public String generateCertificationCode(String phone) {
+    public String generateCertificationCode(String identifier) {
 //        String code = String.format("%04d", new Random().nextInt(1000000));
         String code = "0000";
-        redisService.saveCertificationCode(phone, code);
+        redisService.saveCertificationCode(identifier, code);
         return code;
     }
 
-    public String getCertificationCode(String phone) {
-        return redisService.getCertificationCode(phone);
+    public String getCertificationCode(String identifier) {
+        return redisService.getCertificationCode(identifier);
     }
 
-    public void deleteCertificationCode(String phone) {
-        redisService.deleteCertificationCode(phone);
+    public void deleteCertificationCode(String identifier) {
+        redisService.deleteCertificationCode(identifier);
     }
 }

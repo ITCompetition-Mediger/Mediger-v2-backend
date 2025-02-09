@@ -31,13 +31,14 @@ public class SMSMessageSender implements MessageSender {
     }
 
     @Override
-    public void send(String to, String title, String message) {
+    public void send(String to, String message) {
         Message msg = new Message();
+
         msg.setFrom(senderNumber);
         msg.setTo(to);
-        msg.setText("[" + title + "]\n\n" + message);
+        msg.setText("[ Mediger 인증 번호 ]\n\n" + message);
 
 //        messageService.sendOne(new SingleMessageSendingRequest(msg));
-        log.info("SMS Send to : {} Message : {} {}", to, title, message);
+        log.info("SMS Send to : {} Message : {}", to, message);
     }
 }

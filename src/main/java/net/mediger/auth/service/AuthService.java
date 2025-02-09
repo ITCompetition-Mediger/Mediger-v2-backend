@@ -8,6 +8,7 @@ import net.mediger.auth.jwt.ResponseToken;
 import net.mediger.auth.jwt.TokenProvider;
 import net.mediger.global.exception.CustomException;
 import net.mediger.global.exception.ErrorCode;
+import net.mediger.global.message.MailMessageSender;
 import net.mediger.global.message.SMSMessageSender;
 import net.mediger.member.domain.Business;
 import net.mediger.member.domain.Member;
@@ -28,6 +29,7 @@ public class AuthService {
     private final BusinessRepository businessRepository;
     private final CertificationCodeService certificationCodeService;
     private final SMSMessageSender smsMessageSender;
+    private final MailMessageSender mailMessageSender;
 
     @Transactional
     public boolean isCheckedAccount(String account) {
@@ -44,17 +46,22 @@ public class AuthService {
 
     public void certification(String phone) {
         String code = certificationCodeService.generateCertificationCode(phone);
-        smsMessageSender.send(phone, "Mediger 인증번호", code);
+        smsMessageSender.send(phone, code);
     }
 
-    public boolean verify(String phone, String code) {
-        String savedCode = certificationCodeService.getCertificationCode(phone);
+    public void certificationBusiness(String email) {
+        String code = certificationCodeService.generateCertificationCode(email);
+        mailMessageSender.send(email, code);
+    }
+
+    public boolean verify(String identifier, String code) {
+        String savedCode = certificationCodeService.getCertificationCode(identifier);
 
         if (!ObjectUtils.nullSafeEquals(savedCode, code)) {
             throw new CustomException(ErrorCode.INVALID_CERTIFICATION_CODE);
         }
 
-        certificationCodeService.deleteCertificationCode(phone);
+        certificationCodeService.deleteCertificationCode(identifier);
         return true;
     }
 

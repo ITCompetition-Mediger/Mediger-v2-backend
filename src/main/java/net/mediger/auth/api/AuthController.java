@@ -40,9 +40,17 @@ public class AuthController implements AuthApiDocs {
     }
 
     @Override
+    @PostMapping("certification/business")
+    public ApiResponse<Void> certificationBusiness(@RequestParam String email) {
+        authService.certificationBusiness(email);
+
+        return ApiResponse.success(HttpStatus.NO_CONTENT);
+    }
+
+    @Override
     @PostMapping("verify")
     public ApiResponse<Boolean> verify(@RequestBody RequestVerify requestVerify) {
-        return ApiResponse.success(authService.verify(requestVerify.phone(), requestVerify.code()));
+        return ApiResponse.success(authService.verify(requestVerify.identifier(), requestVerify.code()));
     }
 
     @Override
