@@ -1,5 +1,6 @@
 package net.mediger.global.exception.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse<T> {
 
     private HttpStatus status;
@@ -21,8 +23,8 @@ public class ApiResponse<T> {
         return new ApiResponse<>(HttpStatus.OK, HttpStatus.OK.value(), null, data);
     }
 
-    public static ApiResponse<Void> successWithNoContent() {
-        return new ApiResponse<>(HttpStatus.NO_CONTENT, HttpStatus.NO_CONTENT.value(), null, null);
+    public static ApiResponse<Void> success(HttpStatus status) {
+        return new ApiResponse<>(status, status.value(), null, null);
     }
 
     public static <T> ApiResponse<T> error(ErrorCode errorCode) {

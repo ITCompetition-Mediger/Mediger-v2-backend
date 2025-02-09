@@ -8,7 +8,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,7 +39,7 @@ public class Business extends BaseTimeEntity {
     private String registrationNumber;
 
     @Column(nullable = false)
-    private LocalDate startDate;
+    private String startDate;
 
     @Column(nullable = false)
     private String ownerName;
@@ -66,7 +65,7 @@ public class Business extends BaseTimeEntity {
 
     @Builder(access = lombok.AccessLevel.PRIVATE)
     private Business(String account, String password, String name, String email, String registrationNumber,
-                     LocalDate startDate, String ownerName, String companyName,
+                     String startDate, String ownerName, String companyName,
                      String businessAddress,
                      String ecommerceRegistrationNumber, String settlementAccount, String documents, Role role) {
         this.account = account;
@@ -85,7 +84,7 @@ public class Business extends BaseTimeEntity {
     }
 
     public static Business createBusiness(String account, String password, String name, String email,
-            String registrationNumber, LocalDate startDate, String ownerName,
+            String registrationNumber, String startDate, String ownerName,
                                           String companyName) {
         return Business.builder()
                 .account(account)

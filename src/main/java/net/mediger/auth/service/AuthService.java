@@ -8,6 +8,8 @@ import net.mediger.auth.jwt.ResponseToken;
 import net.mediger.auth.jwt.TokenProvider;
 import net.mediger.global.exception.CustomException;
 import net.mediger.global.exception.ErrorCode;
+import net.mediger.global.message.MailMessageSender;
+import net.mediger.global.message.SMSMessageSender;
 import net.mediger.member.domain.Business;
 import net.mediger.member.domain.Member;
 import net.mediger.member.repository.BusinessRepository;
@@ -15,6 +17,7 @@ import net.mediger.member.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +27,9 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
     private final BusinessRepository businessRepository;
+    private final CertificationCodeService certificationCodeService;
+    private final SMSMessageSender smsMessageSender;
+    private final MailMessageSender mailMessageSender;
 
     @Transactional
     public boolean isCheckedAccount(String account) {
@@ -38,8 +44,29 @@ public class AuthService {
         return true;
     }
 
+    public void certification(String phone) {
+        String code = certificationCodeService.generateCertificationCode(phone);
+        smsMessageSender.send(phone, code);
+    }
+
+    public void certificationBusiness(String email) {
+        String code = certificationCodeService.generateCertificationCode(email);
+        mailMessageSender.send(email, code);
+    }
+
+    public boolean verify(String identifier, String code) {
+        String savedCode = certificationCodeService.getCertificationCode(identifier);
+
+        if (!ObjectUtils.nullSafeEquals(savedCode, code)) {
+            throw new CustomException(ErrorCode.INVALID_CERTIFICATION_CODE);
+        }
+
+        certificationCodeService.deleteCertificationCode(identifier);
+        return true;
+    }
+
     @Transactional
-    public void join(RequestJoin requestJoin) {
+    public Long join(RequestJoin requestJoin) {
         isCheckedAccount(requestJoin.account());
         String encodedPassword = passwordEncoder.encode(requestJoin.password());
 
@@ -47,10 +74,11 @@ public class AuthService {
                 requestJoin.email(), requestJoin.phone());
 
         memberRepository.save(newMember);
+        return newMember.getId();
     }
 
     @Transactional
-    public void joinBusiness(RequestBusinessJoin requestBusinessJoin) {
+    public Long joinBusiness(RequestBusinessJoin requestBusinessJoin) {
         isCheckedAccount(requestBusinessJoin.account());
         String encodedPassword = passwordEncoder.encode(requestBusinessJoin.password());
 
@@ -59,6 +87,7 @@ public class AuthService {
                 requestBusinessJoin.startDate(), requestBusinessJoin.ownerName(), requestBusinessJoin.companyName());
 
         businessRepository.save(business);
+        return business.getId();
     }
 
     @Transactional

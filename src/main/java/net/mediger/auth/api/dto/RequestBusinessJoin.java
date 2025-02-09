@@ -4,7 +4,6 @@ import static net.mediger.auth.api.dto.JoinRegex.ACCOUNT_REGEX;
 import static net.mediger.auth.api.dto.JoinRegex.EMAIL_REGEX;
 import static net.mediger.auth.api.dto.JoinRegex.PASSWORD_REGEX;
 
-import java.time.LocalDate;
 import net.mediger.global.exception.CustomException;
 import net.mediger.global.exception.ErrorCode;
 
@@ -14,7 +13,7 @@ public record RequestBusinessJoin(
         String name,
         String email,
         String registrationNumber,
-        LocalDate startDate,
+        String startDate,
         String ownerName,
         String companyName
 ) {

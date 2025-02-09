@@ -9,6 +9,7 @@ import net.mediger.member.api.docs.MemberApiDocs;
 import net.mediger.member.api.dto.RequestBusinessDetails;
 import net.mediger.member.api.dto.RequestDetails;
 import net.mediger.member.service.MemberService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,7 +30,7 @@ public class MemberController implements MemberApiDocs {
         checkOwner(principal, id);
         memberService.updateDetails(id, requestDetails);
 
-        return ApiResponse.successWithNoContent();
+        return ApiResponse.success(HttpStatus.NO_CONTENT);
     }
 
     @Override
@@ -39,7 +40,7 @@ public class MemberController implements MemberApiDocs {
         checkOwner(principal, id);
         memberService.updateBusinessDetails(id, requestDetails);
 
-        return ApiResponse.successWithNoContent();
+        return ApiResponse.success(HttpStatus.NO_CONTENT);
     }
 
     private void checkOwner(Principal principal, Long id) {
