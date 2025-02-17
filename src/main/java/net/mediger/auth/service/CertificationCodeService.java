@@ -1,6 +1,5 @@
 package net.mediger.auth.service;
 
-import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import net.mediger.auth.jwt.redis.RedisService;
 import org.springframework.stereotype.Service;
