@@ -16,18 +16,20 @@ public class ApiResponse<T> {
 
     private HttpStatus status;
     private int code;
+    private String codeName;
     private String message;
     private T data;
 
     public static <T> ApiResponse<T> success(T data) {
-        return new ApiResponse<>(HttpStatus.OK, HttpStatus.OK.value(), null, data);
+        return new ApiResponse<>(HttpStatus.OK, HttpStatus.OK.value(), null, null, data);
     }
 
     public static ApiResponse<Void> success(HttpStatus status) {
-        return new ApiResponse<>(status, status.value(), null, null);
+        return new ApiResponse<>(status, status.value(), null, null, null);
     }
 
     public static <T> ApiResponse<T> error(ErrorCode errorCode) {
-        return new ApiResponse<>(errorCode.getStatus(), errorCode.getStatus().value(), errorCode.getMessage(), null);
+        return new ApiResponse<>(errorCode.getStatus(), errorCode.getStatus().value(), errorCode.getCodeName(),
+                errorCode.getMessage(), null);
     }
 }

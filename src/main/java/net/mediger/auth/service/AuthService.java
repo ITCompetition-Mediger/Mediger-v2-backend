@@ -66,19 +66,20 @@ public class AuthService {
     }
 
     @Transactional
-    public Long join(RequestJoin requestJoin) {
+    public ResponseToken join(RequestJoin requestJoin) {
         isCheckedAccount(requestJoin.account());
         String encodedPassword = passwordEncoder.encode(requestJoin.password());
 
-        Member newMember = Member.createMember(requestJoin.account(), encodedPassword, requestJoin.name(),
+        Member member = Member.createMember(requestJoin.account(), encodedPassword, requestJoin.name(),
                 requestJoin.email(), requestJoin.phone());
 
-        memberRepository.save(newMember);
-        return newMember.getId();
+        memberRepository.save(member);
+
+        return login(new RequestLogin(requestJoin.account(), requestJoin.password()));
     }
 
     @Transactional
-    public Long joinBusiness(RequestBusinessJoin requestBusinessJoin) {
+    public ResponseToken joinBusiness(RequestBusinessJoin requestBusinessJoin) {
         isCheckedAccount(requestBusinessJoin.account());
         String encodedPassword = passwordEncoder.encode(requestBusinessJoin.password());
 
@@ -87,7 +88,8 @@ public class AuthService {
                 requestBusinessJoin.startDate(), requestBusinessJoin.ownerName(), requestBusinessJoin.companyName());
 
         businessRepository.save(business);
-        return business.getId();
+
+        return loginBusiness(new RequestLogin(requestBusinessJoin.account(), requestBusinessJoin.password()));
     }
 
     @Transactional
