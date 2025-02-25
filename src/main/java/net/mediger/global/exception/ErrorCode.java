@@ -1,5 +1,6 @@
 package net.mediger.global.exception;
 
+import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,7 @@ public enum ErrorCode {
     NOT_FOUND_AGE_RANGE(HttpStatus.NOT_FOUND, "NF002", "존재하지 않는 연령대 입니다."),
     NOT_FOUND_HEALTH_CONDITIONS(HttpStatus.NOT_FOUND, "NF003", "존재하지 않는 건강 상태 입니다."),
     NOT_FOUND_GENDER(HttpStatus.NOT_FOUND, "NF004", "존재하지 않는 성별 입니다."),
+    NOT_FOUNT_BANK(HttpStatus.NOT_FOUND, "NF005", "존재하지 않는 은행 입니다."),
 
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "UA001", "만료된 토큰입니다."),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "UA002", "유효하지 않은 토큰입니다."),
@@ -39,9 +41,17 @@ public enum ErrorCode {
 
     ACCESS_DENIED(HttpStatus.FORBIDDEN, "FB001", "접근 권한이 없습니다."),
 
-    FAILED_SEND_MAIL(HttpStatus.INTERNAL_SERVER_ERROR, "SE001", "이메일 전송에 실패했습니다.");
+    FAILED_SEND_MAIL(HttpStatus.INTERNAL_SERVER_ERROR, "SE001", "이메일 전송에 실패했습니다.")
+    ;
 
     private final HttpStatus status;
     private final String codeName;
     private final String message;
+
+    public static ErrorCode fromMessage(String message) {
+        return Arrays.stream(ErrorCode.values())
+                .filter(errorCode -> errorCode.getMessage().equals(message))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("알 수 없는 에러 메세지 : " + message));
+    }
 }

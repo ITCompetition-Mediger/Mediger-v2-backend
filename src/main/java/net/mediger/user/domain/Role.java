@@ -1,4 +1,4 @@
-package net.mediger.member.domain;
+package net.mediger.user.domain;
 
 public enum Role {
     MEMBER, BUSINESS, ADMIN

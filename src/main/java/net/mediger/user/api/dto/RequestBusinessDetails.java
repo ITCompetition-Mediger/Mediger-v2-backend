@@ -1,8 +1,9 @@
-package net.mediger.member.api.dto;
+package net.mediger.user.api.dto;
 
 public record RequestBusinessDetails(
         String address,
-        String ecommerceRegistrationNumber,
+        String onlineSalesRegistrationNumber,
+        String settlementBank,
         String settlementAccount,
         String documents
 ) {

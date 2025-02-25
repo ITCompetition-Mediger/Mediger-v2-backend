@@ -1,5 +1,6 @@
 package net.mediger.auth.api;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.mediger.auth.api.docs.AuthApiDocs;
 import net.mediger.auth.api.dto.RequestBusinessJoin;
@@ -53,13 +54,13 @@ public class AuthController implements AuthApiDocs {
 
     @Override
     @PostMapping("join")
-    public ApiResponse<ResponseToken> join(@RequestBody RequestJoin requestJoin) {
+    public ApiResponse<ResponseToken> join(@Valid @RequestBody RequestJoin requestJoin) {
         return ApiResponse.success(authService.join(requestJoin));
     }
 
     @Override
     @PostMapping("join/business")
-    public ApiResponse<ResponseToken> joinBusiness(@RequestBody RequestBusinessJoin requestBusinessJoin) {
+    public ApiResponse<ResponseToken> joinBusiness(@Valid @RequestBody RequestBusinessJoin requestBusinessJoin) {
         return ApiResponse.success(authService.joinBusiness(requestBusinessJoin));
     }
 

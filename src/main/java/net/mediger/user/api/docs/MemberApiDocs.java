@@ -1,12 +1,12 @@
-package net.mediger.member.api.docs;
+package net.mediger.user.api.docs;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.security.Principal;
 import net.mediger.global.exception.response.ApiResponse;
-import net.mediger.member.api.dto.RequestBusinessDetails;
-import net.mediger.member.api.dto.RequestDetails;
+import net.mediger.user.api.dto.RequestBusinessDetails;
+import net.mediger.user.api.dto.RequestDetails;
 
 @Tag(name = "Member Controller", description = "회원 관련 API")
 public interface MemberApiDocs {

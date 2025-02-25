@@ -1,23 +1,24 @@
-package net.mediger.member.service;
+package net.mediger.user.service;
 
 import lombok.RequiredArgsConstructor;
 import net.mediger.global.exception.CustomException;
 import net.mediger.global.exception.ErrorCode;
-import net.mediger.member.api.dto.RequestBusinessDetails;
-import net.mediger.member.api.dto.RequestDetails;
-import net.mediger.member.domain.AgeRange;
-import net.mediger.member.domain.Business;
-import net.mediger.member.domain.Gender;
-import net.mediger.member.domain.HealthConditions;
-import net.mediger.member.domain.Member;
-import net.mediger.member.repository.BusinessRepository;
-import net.mediger.member.repository.MemberRepository;
+import net.mediger.user.api.dto.RequestBusinessDetails;
+import net.mediger.user.api.dto.RequestDetails;
+import net.mediger.user.domain.business.Bank;
+import net.mediger.user.domain.member.AgeRange;
+import net.mediger.user.domain.business.Business;
+import net.mediger.user.domain.member.Gender;
+import net.mediger.user.domain.member.HealthConditions;
+import net.mediger.user.domain.member.Member;
+import net.mediger.user.repository.BusinessRepository;
+import net.mediger.user.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class MemberService {
+public class UserService {
 
     private final MemberRepository memberRepository;
     private final BusinessRepository businessRepository;
@@ -25,18 +26,21 @@ public class MemberService {
     @Transactional
     public void updateDetails(Long id, RequestDetails requestDetails) {
         Member member = findAccount(id);
+
         member.updateDetails(
-                Gender.findGender(requestDetails.gender()),
-                AgeRange.findAgeRange(requestDetails.age()),
-                HealthConditions.of(requestDetails.healthCondition())
+                Gender.of(requestDetails.gender()),
+                AgeRange.of(requestDetails.age()),
+                HealthConditions.of(requestDetails.healthConditions())
         );
     }
 
     @Transactional
     public void updateBusinessDetails(Long id, RequestBusinessDetails requestDetails) {
         Business business = findBusinessAccount(id);
-        business.updateBusinessDetails(requestDetails.address(), requestDetails.ecommerceRegistrationNumber(),
-                requestDetails.settlementAccount(), requestDetails.settlementAccount());
+
+        business.updateDetails(requestDetails.address(), requestDetails.onlineSalesRegistrationNumber(),
+                Bank.of(requestDetails.settlementBank()), requestDetails.settlementAccount(),
+                requestDetails.documents());
     }
 
     private Member findAccount(Long id) {

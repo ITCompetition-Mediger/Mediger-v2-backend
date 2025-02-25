@@ -1,7 +1,7 @@
-package net.mediger.member.repository;
+package net.mediger.user.repository;
 
 import java.util.Optional;
-import net.mediger.member.domain.Business;
+import net.mediger.user.domain.business.Business;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

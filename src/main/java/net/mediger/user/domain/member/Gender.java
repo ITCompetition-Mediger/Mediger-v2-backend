@@ -1,4 +1,4 @@
-package net.mediger.member.domain;
+package net.mediger.user.domain.member;
 
 import java.util.Arrays;
 import net.mediger.global.exception.CustomException;
@@ -6,9 +6,13 @@ import net.mediger.global.exception.ErrorCode;
 
 public enum Gender {
 
-    MALE, FEMALE, ETC;
+    MALE, FEMALE, ETC, UNSELECTED;
 
-    public static Gender findGender(String gender) {
+    public static Gender of(String gender) {
+        if (gender == null || gender.isEmpty()) {
+            return UNSELECTED;
+        }
+
         return Arrays.stream(Gender.values())
                 .filter(gen -> gen.toString().equals(gender.toUpperCase()))
                 .findFirst()
