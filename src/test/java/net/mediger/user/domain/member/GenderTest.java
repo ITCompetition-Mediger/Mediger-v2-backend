@@ -46,6 +46,7 @@ class GenderTest {
     @ValueSource(strings = {"남성", "여성", "기타"})
     void shouldThrowException_WhenInvalidGender(String invalidGender) {
         assertThatThrownBy(() -> Gender.of(invalidGender))
-                .isInstanceOf(CustomException.class);
+                .isInstanceOf(CustomException.class)
+                .hasMessage("존재하지 않는 성별입니다.");
     }
 }

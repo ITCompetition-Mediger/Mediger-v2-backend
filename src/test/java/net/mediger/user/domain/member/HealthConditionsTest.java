@@ -1,5 +1,6 @@
 package net.mediger.user.domain.member;
 
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -43,11 +44,19 @@ class HealthConditionsTest {
         });
     }
 
+    @DisplayName("건강 상태을 소문자로 입력했을 경우 예외가 발생하지 않는다.")
+    @ParameterizedTest
+    @ValueSource(strings = {"essential", "energy", "strong_immunity"})
+    void shouldDoesNotThrowException_WhenLowerHealthCondition(String healthCondition) {
+        assertThatNoException().isThrownBy(() -> HealthConditions.fromString(healthCondition));
+    }
+
     @DisplayName("올바르지 않은 건강 상태일 경우 예외가 발생한다.")
     @ParameterizedTest
     @ValueSource(strings = {"DEPRESSION", "ANXIETY", "STRESS"})
-    void shouldThrowException_WhenInvalidHealthCondition(String healthConditions) {
-        assertThatThrownBy(() -> HealthConditions.fromString(healthConditions))
-                .isInstanceOf(CustomException.class);
+    void shouldThrowException_WhenInvalidHealthCondition(String healthCondition) {
+        assertThatThrownBy(() -> HealthConditions.fromString(healthCondition))
+                .isInstanceOf(CustomException.class)
+                .hasMessage("존재하지 않는 건강 상태입니다.");
     }
 }

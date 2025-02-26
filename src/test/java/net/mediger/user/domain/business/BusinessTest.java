@@ -36,8 +36,8 @@ class BusinessTest {
         companyName = "테스트회사";
     }
 
-    @Test
     @DisplayName("정상적으로 Business 객체가 생성된다.")
+    @Test
     void shouldBuild_WhenValidBusiness() {
         Business business = Business.createBusiness(account, password, name, email, registrationNumber,
                 startDate, ownerName, companyName);
@@ -55,8 +55,8 @@ class BusinessTest {
         );
     }
 
-    @Test
     @DisplayName("정상적으로 Business 추가 정보가 업데이트된다.")
+    @Test
     void shouldUpdate_WhenBusinessDetails() {
         Business business = Business.createBusiness(account, password, name, email, registrationNumber,
                 startDate, ownerName, companyName);
@@ -69,7 +69,7 @@ class BusinessTest {
                 () -> assertEquals("1234567890", business.getOnlineSalesRegistrationNumber()),
                 () -> assertEquals(Bank.KAKAO_BANK, business.getSettlementBank()),
                 () -> assertEquals("1234567890", business.getSettlementAccount()),
-                () -> assertEquals("test.pdf", business.getDocuments())
+                () -> assertEquals("test.pdf", business.getDocument())
         );
     }
 
@@ -114,6 +114,21 @@ class BusinessTest {
                         startDate, ownerName, companyName))
                         .isInstanceOf(CustomException.class)
                         .hasMessage("비밀번호는 필수로 입력해야 합니다.");
+            }
+        }
+
+        @Nested
+        @DisplayName("이름 검증 테스트")
+        class ValidateNameTest {
+
+            @DisplayName("이름이 null이거나 빈 문자열일 경우 예외가 발생한다")
+            @ParameterizedTest
+            @NullAndEmptySource
+            void shouldThrowException_WhenNameNullOrEmpty(String name) {
+                assertThatThrownBy(() -> Business.createBusiness(account, password, name, email, registrationNumber,
+                        startDate, ownerName, companyName))
+                        .isInstanceOf(CustomException.class)
+                        .hasMessage("이름은 필수로 입력해야 합니다.");
             }
         }
 

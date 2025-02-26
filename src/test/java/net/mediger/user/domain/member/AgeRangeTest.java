@@ -46,6 +46,7 @@ class AgeRangeTest {
     @ValueSource(strings = {"10대", "20대", "30대"})
     void shouldThrowException_WhenInvalidAgeRange(String ageRange) {
         assertThatThrownBy(() -> AgeRange.of(ageRange))
-                .isInstanceOf(CustomException.class);
+                .isInstanceOf(CustomException.class)
+                .hasMessage("존재하지 않는 연령대입니다.");
     }
 }
