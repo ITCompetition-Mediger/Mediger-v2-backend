@@ -69,10 +69,4 @@ public class AuthController implements AuthApiDocs {
     public ApiResponse<ResponseToken> login(@RequestBody RequestLogin requestLogin) {
         return ApiResponse.success(authService.login(requestLogin));
     }
-
-    @Override
-    @PostMapping("login/business")
-    public ApiResponse<ResponseToken> loginBusiness(@RequestBody RequestLogin requestLogin) {
-        return ApiResponse.success(authService.loginBusiness(requestLogin));
-    }
 }

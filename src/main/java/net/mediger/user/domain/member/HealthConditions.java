@@ -31,19 +31,19 @@ public enum HealthConditions {
         this.healthCondition = healthCondition;
     }
 
-    public static HealthConditions fromString(String condition) {
+    public static HealthConditions fromString(String healthCondition) {
         return Stream.of(values())
-                .filter(c -> c.name().equalsIgnoreCase(condition))
+                .filter(c -> c.name().toUpperCase().equalsIgnoreCase(healthCondition))
                 .findFirst()
                 .orElseThrow(() -> new CustomException(NOT_FOUND_HEALTH_CONDITIONS));
     }
 
-     public static List<HealthConditions> of(List<String> healthCondition) {
-        if (healthCondition == null || healthCondition.isEmpty()) {
+    public static List<HealthConditions> of(List<String> healthConditions) {
+        if (healthConditions == null || healthConditions.isEmpty()) {
             return Collections.emptyList();
         }
 
-        return healthCondition.stream()
+        return healthConditions.stream()
                 .map(HealthConditions::fromString)
                 .toList();
     }

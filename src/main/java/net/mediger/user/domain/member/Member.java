@@ -30,7 +30,7 @@ public class Member extends User {
     private Gender gender;
 
     @Enumerated(EnumType.STRING)
-    private AgeRange age;
+    private AgeRange ageRange;
 
     @ElementCollection(targetClass = HealthConditions.class)
     @CollectionTable(name = "member_health_conditions", joinColumns = @JoinColumn(name = "id"))
@@ -64,9 +64,9 @@ public class Member extends User {
         }
     }
 
-    public void updateDetails(Gender gender, AgeRange age, List<HealthConditions> healthConditions) {
+    public void updateDetails(Gender gender, AgeRange ageRange, List<HealthConditions> healthConditions) {
         this.gender = gender;
-        this.age = age;
+        this.ageRange = ageRange;
         this.healthConditions = healthConditions;
     }
 }
