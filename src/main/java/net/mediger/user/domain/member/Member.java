@@ -2,10 +2,13 @@ package net.mediger.user.domain.member;
 
 import static net.mediger.auth.api.dto.JoinRegex.PHONE_REGEX;
 
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.JoinColumn;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -29,8 +32,10 @@ public class Member extends User {
     @Enumerated(EnumType.STRING)
     private AgeRange age;
 
-    @Column(columnDefinition = "TEXT")
+    @ElementCollection(targetClass = HealthConditions.class)
+    @CollectionTable(name = "member_health_conditions", joinColumns = @JoinColumn(name = "id"))
     @Enumerated(EnumType.STRING)
+    @Column(name = "health_condition")
     private List<HealthConditions> healthConditions;
 
     @Builder(access = AccessLevel.PRIVATE)
