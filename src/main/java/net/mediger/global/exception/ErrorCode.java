@@ -27,13 +27,12 @@ public enum ErrorCode {
 
     INVALID_CERTIFICATION_CODE(HttpStatus.BAD_REQUEST, "CF001", "인증번호가 일치하지 않습니다."),
 
-    NOT_MATCH_USER(HttpStatus.BAD_REQUEST, "AU001", "본인의 정보만 수정할 수 있습니다."),
-
-    NOT_FOUND_ACCOUNT(HttpStatus.NOT_FOUND, "NF001", "존재하지 않는 아이디입니다."),
-    NOT_FOUND_AGE_RANGE(HttpStatus.NOT_FOUND, "NF002", "존재하지 않는 연령대입니다."),
-    NOT_FOUND_HEALTH_CONDITIONS(HttpStatus.NOT_FOUND, "NF003", "존재하지 않는 건강 상태입니다."),
-    NOT_FOUND_GENDER(HttpStatus.NOT_FOUND, "NF004", "존재하지 않는 성별입니다."),
-    NOT_FOUNT_BANK(HttpStatus.NOT_FOUND, "NF005", "존재하지 않는 은행입니다."),
+    NOT_FOUND_USER(HttpStatus.NOT_FOUND, "NF001", "존재하지 않는 사용자입니다."),
+    NOT_FOUND_ACCOUNT(HttpStatus.NOT_FOUND, "NF002", "존재하지 않는 아이디입니다."),
+    NOT_FOUND_AGE_RANGE(HttpStatus.NOT_FOUND, "NF003", "존재하지 않는 연령대입니다."),
+    NOT_FOUND_HEALTH_CONDITIONS(HttpStatus.NOT_FOUND, "NF004", "존재하지 않는 건강 상태입니다."),
+    NOT_FOUND_GENDER(HttpStatus.NOT_FOUND, "NF005", "존재하지 않는 성별입니다."),
+    NOT_FOUNT_BANK(HttpStatus.NOT_FOUND, "NF006", "존재하지 않는 은행입니다."),
 
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "UA001", "만료된 토큰입니다."),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "UA002", "유효하지 않은 토큰입니다."),

@@ -8,20 +8,20 @@ import net.mediger.global.exception.response.ApiResponse;
 import net.mediger.user.api.dto.RequestBusinessDetails;
 import net.mediger.user.api.dto.RequestDetails;
 
-@Tag(name = "Member Controller", description = "회원 관련 API")
-public interface MemberApiDocs {
+@Tag(name = "User Controller", description = "회원 관련 API")
+public interface UserApiDocs {
 
-    @Operation(summary = "회원 정보 업데이트")
+    @Operation(summary = "일반 회원 정보 업데이트")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "회원 정보 업데이트 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "회원 정보 업데이트 실패")}
     )
-    ApiResponse<Void> update(Principal principal, Long id, RequestDetails requestDetails);
+    ApiResponse<Void> update(Principal principal, RequestDetails requestDetails);
 
     @Operation(summary = "사업자 정보 업데이트")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "사업자 정보 업데이트 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "사업자 정보 업데이트 실패")}
     )
-    ApiResponse<Void> updateBusiness(Principal principal, Long id, RequestBusinessDetails requestBusinessDetails);
+    ApiResponse<Void> updateBusiness(Principal principal, RequestBusinessDetails requestBusinessDetails);
 }

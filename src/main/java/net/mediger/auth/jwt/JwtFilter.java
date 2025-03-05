@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import net.mediger.auth.service.CookieService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,16 +20,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
-    private static final String AUTHORIZATION_HEADER = "Authorization";
-    private static final String TOKEN_PREFIX = "Bearer ";
-
     private final TokenProvider tokenProvider;
+    private final CookieService cookieService;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
-                                    @NonNull FilterChain filterChain)
-            throws ServletException, IOException {
-        String token = resolveToken(request);
+                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
+        String token = cookieService.getTokenFromCookie(request);
 
         if (StringUtils.hasText(token) && isValidateToken(token)) {
             setAuthentication(token);
@@ -37,25 +35,17 @@ public class JwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private String resolveToken(HttpServletRequest request) {
-        String token = request.getHeader(AUTHORIZATION_HEADER);
-
-        if (StringUtils.hasText(token) && token.startsWith(TOKEN_PREFIX)) {
-            return token.substring(TOKEN_PREFIX.length());
-        }
-
-        return null;
-    }
-
     private boolean isValidateToken(String token) {
         return tokenProvider.validateToken(token);
     }
 
     private void setAuthentication(String token) {
-        String id = tokenProvider.getIdFromToken(token);
+        Long id = tokenProvider.getIdFromToken(token);
         String role = tokenProvider.getRoleFromToken(token);
+
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(id, null,
                 getAuthority(role));
+
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
 
