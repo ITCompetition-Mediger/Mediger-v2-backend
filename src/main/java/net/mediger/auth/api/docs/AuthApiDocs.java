@@ -34,7 +34,7 @@ public interface AuthApiDocs {
     )
     ApiResponse<Void> certificationBusiness(String email);
 
-    @Operation(summary = "휴대폰 / 이메일 인증 확인")
+    @Operation(summary = "휴대폰/이메일 인증 확인")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "인증 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "인증 실패")}
@@ -55,17 +55,10 @@ public interface AuthApiDocs {
     })
     ApiResponse<ResponseToken> joinBusiness(RequestBusinessJoin requestBusinessJoin);
 
-    @Operation(summary = "일반 회원 로그인")
+    @Operation(summary = "일반/사업자 회원 로그인")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "로그인 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "로그인 실패")}
     )
     ApiResponse<ResponseToken> login(RequestLogin requestLogin);
-
-    @Operation(summary = "사업자 회원 로그인")
-    @ApiResponses(value = {
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "로그인 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "로그인 실패")}
-    )
-    ApiResponse<ResponseToken> loginBusiness(RequestLogin requestLogin);
 }

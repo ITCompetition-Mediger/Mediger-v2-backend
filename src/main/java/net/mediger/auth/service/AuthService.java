@@ -10,10 +10,10 @@ import net.mediger.global.exception.CustomException;
 import net.mediger.global.exception.ErrorCode;
 import net.mediger.global.message.MailMessageSender;
 import net.mediger.global.message.SMSMessageSender;
-import net.mediger.member.domain.Business;
-import net.mediger.member.domain.Member;
-import net.mediger.member.repository.BusinessRepository;
-import net.mediger.member.repository.MemberRepository;
+import net.mediger.user.domain.User;
+import net.mediger.user.domain.business.Business;
+import net.mediger.user.domain.member.Member;
+import net.mediger.user.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,19 +25,13 @@ public class AuthService {
 
     private final TokenProvider tokenProvider;
     private final PasswordEncoder passwordEncoder;
-    private final MemberRepository memberRepository;
-    private final BusinessRepository businessRepository;
+    private final UserRepository userRepository;
     private final CertificationCodeService certificationCodeService;
     private final SMSMessageSender smsMessageSender;
     private final MailMessageSender mailMessageSender;
 
-    @Transactional
     public boolean isCheckedAccount(String account) {
-        if (memberRepository.existsByAccount(account)) {
-            throw new CustomException(ErrorCode.EXIST_ACCOUNT);
-        }
-
-        if (businessRepository.existsByAccount(account)) {
+        if (userRepository.existsByAccount(account)) {
             throw new CustomException(ErrorCode.EXIST_ACCOUNT);
         }
 
@@ -73,7 +67,7 @@ public class AuthService {
         Member member = Member.createMember(requestJoin.account(), encodedPassword, requestJoin.name(),
                 requestJoin.email(), requestJoin.phone());
 
-        memberRepository.save(member);
+        userRepository.save(member);
 
         return login(new RequestLogin(requestJoin.account(), requestJoin.password()));
     }
@@ -87,45 +81,26 @@ public class AuthService {
                 requestBusinessJoin.name(), requestBusinessJoin.email(), requestBusinessJoin.registrationNumber(),
                 requestBusinessJoin.startDate(), requestBusinessJoin.ownerName(), requestBusinessJoin.companyName());
 
-        businessRepository.save(business);
+        userRepository.save(business);
 
-        return loginBusiness(new RequestLogin(requestBusinessJoin.account(), requestBusinessJoin.password()));
+        return login(new RequestLogin(requestBusinessJoin.account(), requestBusinessJoin.password()));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public ResponseToken login(RequestLogin requestLogin) {
-        Member member = findAccount(requestLogin.account());
-        isMatchedPassword(requestLogin.password(), member);
+        User user = findAccount(requestLogin.account());
+        isMatchedPassword(requestLogin.password(), user);
 
-        return tokenProvider.generateToken(member.getId(), member.getRole().name());
+        return tokenProvider.generateToken(user.getId(), user.getRole().name());
     }
 
-    @Transactional
-    public ResponseToken loginBusiness(RequestLogin requestLogin) {
-        Business business = findBusinessAccount(requestLogin.account());
-        isMatchedPasswordByBusiness(requestLogin.password(), business);
-
-        return tokenProvider.generateToken(business.getId(), business.getRole().name());
-    }
-
-    private Member findAccount(String account) {
-        return memberRepository.findMemberByAccount(account)
+    private User findAccount(String account) {
+        return userRepository.findByAccount(account)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ACCOUNT));
     }
 
-    private Business findBusinessAccount(String account) {
-        return businessRepository.findBusinessByAccount(account)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ACCOUNT));
-    }
-
-    private void isMatchedPassword(String password, Member member) {
-        if (!passwordEncoder.matches(password, member.getPassword())) {
-            throw new CustomException(ErrorCode.MISMATCH_PASSWORD);
-        }
-    }
-
-    private void isMatchedPasswordByBusiness(String password, Business business) {
-        if (!passwordEncoder.matches(password, business.getPassword())) {
+    private void isMatchedPassword(String password, User user) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new CustomException(ErrorCode.MISMATCH_PASSWORD);
         }
     }

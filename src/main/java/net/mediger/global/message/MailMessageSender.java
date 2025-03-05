@@ -27,7 +27,5 @@ public class MailMessageSender implements MessageSender {
         } catch (Exception e) {
             throw new CustomException(ErrorCode.FAILED_SEND_MAIL);
         }
-
-        mailMessage.getText();
     }
 }

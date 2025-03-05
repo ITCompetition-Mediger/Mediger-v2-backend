@@ -23,6 +23,7 @@ public class TokenProvider {
 
     private static final String ID_KEY = "id";
     private static final String ROLE_KEY = "role";
+    private static final String ROLE_PREFIX = "ROLE_";
 
     private final JwtProperties jwtProperties;
     private final RedisService redisService;
@@ -43,15 +44,15 @@ public class TokenProvider {
 
         return Jwts.builder()
                 .claim(ID_KEY, id)
-                .claim(ROLE_KEY, role)
+                .claim(ROLE_KEY, ROLE_PREFIX + role)
                 .issuedAt(now)
                 .expiration(new Date(now.getTime() + jwtProperties.accessTokenExpiration()))
                 .signWith(Keys.hmacShaKeyFor(jwtProperties.secret().getBytes()))
                 .compact();
     }
 
-    public String getIdFromToken(String token) {
-        return getClaimFromToken(token, ID_KEY);
+    public Long getIdFromToken(String token) {
+        return Long.parseLong(getClaimFromToken(token, ID_KEY));
     }
 
     public String getRoleFromToken(String token) {
