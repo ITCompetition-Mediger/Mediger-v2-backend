@@ -21,9 +21,11 @@ public enum ErrorCode {
 
     NULL_EMAIL(HttpStatus.BAD_REQUEST, "VA008", "이메일은 필수로 입력해야 합니다."),
     INVALID_EMAIL(HttpStatus.BAD_REQUEST, "VA009", "이메일 형식(xxx@xxx.xx)이 올바르지 않습니다."),
+    EXIST_EMAIL(HttpStatus.BAD_REQUEST, "VA010", "이미 존재하는 이메일입니다."),
 
-    NULL_PHONE(HttpStatus.BAD_REQUEST, "VA010", "휴대폰 번호는 필수로 입력해야 합니다."),
-    INVALID_PHONE(HttpStatus.BAD_REQUEST, "VA011", "휴대폰 번호의 형식(010xxxxxxxx)이 올바르지 않습니다."),
+    NULL_PHONE(HttpStatus.BAD_REQUEST, "VA011", "휴대폰 번호는 필수로 입력해야 합니다."),
+    INVALID_PHONE(HttpStatus.BAD_REQUEST, "VA012", "휴대폰 번호의 형식(010xxxxxxxx)이 올바르지 않습니다."),
+    EXIST_PHONE(HttpStatus.BAD_REQUEST, "VA013", "이미 존재하는 휴대폰 번호입니다."),
 
     INVALID_CERTIFICATION_CODE(HttpStatus.BAD_REQUEST, "CF001", "인증번호가 일치하지 않습니다."),
 

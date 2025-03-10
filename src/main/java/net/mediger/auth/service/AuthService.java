@@ -13,6 +13,7 @@ import net.mediger.global.message.SMSMessageSender;
 import net.mediger.user.domain.User;
 import net.mediger.user.domain.business.Business;
 import net.mediger.user.domain.member.Member;
+import net.mediger.user.repository.MemberRepository;
 import net.mediger.user.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class AuthService {
     private final TokenProvider tokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     private final CertificationCodeService certificationCodeService;
     private final SMSMessageSender smsMessageSender;
     private final MailMessageSender mailMessageSender;
@@ -39,11 +41,13 @@ public class AuthService {
     }
 
     public void certification(String phone) {
+        isCheckedPhone(phone);
         String code = certificationCodeService.generateCertificationCode(phone);
         smsMessageSender.send(phone, code);
     }
 
     public void certificationBusiness(String email) {
+        isCheckedEmail(email);
         String code = certificationCodeService.generateCertificationCode(email);
         mailMessageSender.send(email, code);
     }
@@ -92,6 +96,18 @@ public class AuthService {
         isMatchedPassword(requestLogin.password(), user);
 
         return tokenProvider.generateToken(user.getId(), user.getRole().name());
+    }
+
+    private void isCheckedPhone(String phone) {
+        if (memberRepository.existsByPhone(phone)) {
+            throw new CustomException(ErrorCode.EXIST_PHONE);
+        }
+    }
+
+    private void isCheckedEmail(String email) {
+        if (userRepository.existsByEmail(email)) {
+            throw new CustomException(ErrorCode.EXIST_EMAIL);
+        }
     }
 
     private User findAccount(String account) {
